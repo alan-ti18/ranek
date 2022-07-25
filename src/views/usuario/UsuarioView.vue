@@ -1,39 +1,92 @@
 <template>
-  <div class="perfil">
-    <h1>Perfil do Usuário</h1>
-    <h2><span>Nome: </span>{{ usuario.nome }}</h2>
-    <h2><span>E-mail: </span>{{ usuario.email }}</h2>
-    <h2><span>Rua: </span>{{ usuario.rua }}</h2>
-    <h2><span>Nº: </span>{{ usuario.numero }}</h2>
-    <h2><span>Cidade: </span>{{ usuario.cidade }}</h2>
-    <h2><span>Estado: </span>{{ usuario.estado }}</h2>
-  </div>
+  <section class="usuario">
+    <nav class="sidenav">
+      <ul>
+        <li>
+          <router-link :to="{ name: 'usuario' }">Produtos</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'compras' }">Compras</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'vendas' }">Vendas</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'usuario-editar' }">Editar Usuário</router-link>
+        </li>
+        <li>
+          <button @click.prevent="deslogar">Deslogar</button>
+        </li>
+      </ul>
+    </nav>
+    <transition mode="out-in">
+      <router-view></router-view>
+    </transition>
+  </section>
 </template>
 
 <script>
 export default {
   name: "UsuarioView",
   computed: {
-    usuario() {
-      return this.$store.state.usuario;
+  },
+  methods: {
+    deslogar() {
+      this.$store.dispatch("deslogarUsuario");
+      this.$router.push('/login');
     }
   }
 }
 </script>
 
 <style scoped>
-.perfil {
-  margin: 40px 0 32px 32px;
+.usuario {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  max-width: 900px;
+  margin: 40px auto;
+  grid-gap: 30px;
+  padding: 20px;
 }
 
-h2 {
-  margin: 16px 0;
+.sidenav ul li a,
+.sidenav button {
+  padding: 10px 16px;
+  display: block;
+  background: #f4f7fc;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  transition: all .1s;
 }
 
-span {
-  font-weight: 300;
+.sidenav ul li a:hover {
+  border-left: 5px solid #87f;
+}
+
+.sidenav button:hover {
+  background: #87f;
+  color: #eee;
+}
+
+.sidenav a.router-link-exact-active {
+  border-left: 5px solid #87f;
+  color: #87f;
+}
+
+.sidenav button {
+  border: none;
+  width: 100%;
   font-size: 1rem;
-  display: inline-block;
-  width: 100px;
+  text-align: left;
+    font-family: "Avenir", Arial, Helvetica, sans-serif;
+    cursor: pointer;
+  }
+  
+  @media screen and (max-width: 500px) {
+    .usuario {
+      grid-template-columns: 1fr;
+      margin: 0 auto;
+  
+    }
 }
 </style>
